@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-button type="primary" @click="handleAdd" class="add_product">添加产品详细</el-button>
+		<el-button type="primary" @click="handleAdd" class="add_product">添加帮助内容</el-button>
 	    <!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
 			<el-table-column type="selection" width="55">
