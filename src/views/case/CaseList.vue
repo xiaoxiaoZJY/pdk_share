@@ -1,13 +1,7 @@
 <template>
 	<section>
-		<el-col :span="4" class="service_addr">
-			<el-select v-model="value" multiple filterable default-first-option placeholder= "请选择服务地区">
-			    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
-			    </el-option>
-			</el-select>
-		</el-col> 
-		<el-col :span="6" class="list_choose">
-			<el-select v-model="value2" multiple filterable default-first-option placeholder= "请选择分类">
+		<el-col :span="4" class="list_choose">
+			<el-select v-model="value2" multiple filterable default-first-option placeholder= "请选择案例状态">
 			    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
 			    </el-option>
 			</el-select>
@@ -22,19 +16,17 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column prop="name" label="产品名称" min-width="200" >
+			<el-table-column prop="name" label="案例标题" min-width="200" >
 			</el-table-column>
-			<el-table-column prop="sex" label="产品价格（元）" width="140">
+			<el-table-column prop="sex" label="一级分类" width="150">
 			</el-table-column>
-			<el-table-column prop="age" label="产品价格（件）" width="140">
+			<el-table-column prop="age" label="创建时间" width="150">
 			</el-table-column>
-			<el-table-column prop="age" label="访问量" width="100">
+			<el-table-column prop="age" label="所属行业" width="150">
 			</el-table-column>
-			<el-table-column prop="addr" label="所属分类" min-width="150">
+			<el-table-column prop="addr" label="公司名称" min-width="150">
 			</el-table-column>
-			<el-table-column prop="addr" label="服务地区" min-width="150">
-			</el-table-column>
-			<el-table-column prop="age" label="单位" min-width="50">
+			<el-table-column prop="sex" label="首页推荐" width="100">
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
@@ -51,27 +43,117 @@
 		<!-- 添加产品详细 待续。。。。。。-->
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="150px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="产品名称:">
-					<el-input v-model="addForm.name"></el-input>
+				<el-form-item label="案例标题:">
+					<el-row>
+						<el-col :span='10'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='6' :offset="1">
+							<el-select v-model="value2" multiple filterable default-first-option placeholder= "是否首页展示">
+							    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+							    </el-option>
+							</el-select>
+						</el-col>
+					</el-row>
 				</el-form-item>
-				<el-form-item label="产品价格（元）:">
+				<el-form-item label="关键词:">
 					<el-input v-model="addForm.age"></el-input>
 				</el-form-item>
-				<el-form-item label="产品价格（件）:">
+				<el-form-item label="企业LOGO:">
 					<el-input v-model="addForm.name"></el-input>
 				</el-form-item>
-				<el-form-item label="访问量:">
-					<el-input type="textarea" v-model="addForm.addr"></el-input>
+				<el-form-item label="项目上线日期:">
+					<el-input v-model="addForm.addr"></el-input>
 				</el-form-item>
-				<el-form-item label="所属分类:">
-					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
+				<el-form-item label="案例顾问:">
+					<el-select v-model="value3" multiple filterable default-first-option placeholder= "请选择文章标签">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
 				</el-form-item>
-				<el-form-item label="栏目负责人:">
+				<el-form-item label="分类选择:">
 					<el-select v-model="value" multiple filterable default-first-option placeholder= "请选择文章标签">
 					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
 					    </el-option>
 					</el-select>
-				</el-form-item>  				
+				</el-form-item>
+				<el-form-item label="关联产品:">
+					<el-select v-model="value2" multiple filterable default-first-option placeholder= "请选择文章标签">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="所属行业:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="企业名称:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>  
+				<el-form-item label="企业网址:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="主推产品1:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="addForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品2:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="addForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品3:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="addForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品4:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="addForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品5:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="addForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="企业介绍:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="项目展示:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="数据展示:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="数据展示:">
+					<el-input type="textarea" v-model="addForm.addr"></el-input>
+				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="addFormVisible = false">取消</el-button>
@@ -81,26 +163,116 @@
 		<!--编辑界面一级分类-->
 		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="150px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="产品名称">
-					<el-input v-model="editForm.name"></el-input>
+				<el-form-item label="案例标题:">
+					<el-row>
+						<el-col :span='10'>
+							<el-input v-model="addForm.name"></el-input>
+						</el-col>
+						<el-col :span='6' :offset="1">
+							<el-select v-model="value2" multiple filterable default-first-option placeholder= "是否首页展示">
+							    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+							    </el-option>
+							</el-select>
+						</el-col>
+					</el-row>
 				</el-form-item>
-				<el-form-item label="产品价格（元）">
-					<el-input v-model="editForm.sex"></el-input>
-				</el-form-item>
-				<el-form-item label="产品价格（件）">
+				<el-form-item label="关键词:">
 					<el-input v-model="editForm.age"></el-input>
 				</el-form-item>
-				<el-form-item label="访问量">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
+				<el-form-item label="企业LOGO:">
+					<el-input v-model="editForm.name"></el-input>
 				</el-form-item>
-				<el-form-item label="分类排名:">
-					<el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
+				<el-form-item label="项目上线日期:">
+					<el-input v-model="editForm.addr"></el-input>
 				</el-form-item>
-				<el-form-item label="栏目负责人:">
+				<el-form-item label="案例顾问:">
+					<el-select v-model="value3" multiple filterable default-first-option placeholder= "请选择文章标签">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="分类选择:">
 					<el-select v-model="value" multiple filterable default-first-option placeholder= "请选择文章标签">
 					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
 					    </el-option>
 					</el-select>
+				</el-form-item>
+				<el-form-item label="关联产品:">
+					<el-select v-model="value2" multiple filterable default-first-option placeholder= "请选择文章标签">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="所属行业:">
+					<el-input v-model="editForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="企业名称:">
+					<el-input v-model="editForm.addr"></el-input>
+				</el-form-item>  
+				<el-form-item label="企业网址:">
+					<el-input v-model="editForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="主推产品1:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="editForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="editForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品2:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="editForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="editForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品3:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="editForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="editForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品4:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="editForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="editForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="主推产品5:">
+					<el-row>
+						<el-col :span='6'>
+							<el-input v-model="editForm.name"></el-input>
+						</el-col>
+						<el-col :span='10' :offset="1">
+							<el-input v-model="editForm.name" placeholder="请输入产品链接"></el-input>
+						</el-col>
+					</el-row>
+				</el-form-item>
+				<el-form-item label="企业介绍:">
+					<el-input v-model="editForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="项目展示:">
+					<el-input v-model="editForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="数据展示:">
+					<el-input v-model="editForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="数据展示:">
+					<el-input type="textarea" v-model="editForm.addr"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -187,6 +359,7 @@
 		        }],
 		        value: [],
 		        value2: [],
+		        value3: [],
 			}
 		},
 		methods: {
