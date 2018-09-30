@@ -15,3 +15,12 @@ export const batchRemoveUser = params => { return axios.get(`${base}/user/batchr
 export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
 
 export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };
+
+
+
+var qs=require('qs');
+var instance = axios.create({
+  headers: {'content-type': 'application/x-www-form-urlencoded'}
+});
+
+export const test = params => { return instance.get('/api/product/category/', { p: 1, page_size: 10 }); };

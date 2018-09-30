@@ -1,4 +1,452 @@
 <template>
-	<section>待写...
+	<section>
+		<el-col :span="4" class="service_addr">
+			<el-select v-model="value" multiple filterable default-first-option placeholder= "顾问组">
+			    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+			    </el-option>
+			</el-select>
+		</el-col> 
+		<el-col :span="4" class="search_content">
+			<el-input v-model="input" placeholder="搜索顾问"></el-input>
+			<el-button type="primary" icon="el-icon-search">搜索</el-button>
+		</el-col>
+		<el-button type="primary" @click="handleAdd" class="add_product">添加顾问</el-button>
+		<el-button type="primary" @click="handleconsultEdit" class="edit_consult">编辑顾问组</el-button>
+		<el-button type="primary" @click="handleconsultAdd" class="add_consult">添加顾问组</el-button>
+		
+	    <!--列表-->
+		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
+			<el-table-column type="selection" width="55">
+			</el-table-column>
+			<el-table-column prop="name" label="顾问姓名" width="200" >
+			</el-table-column>
+			<el-table-column prop="sex" label="联系电话" width="200">
+			</el-table-column>
+			<el-table-column prop="age" label="顾问组" width="200">
+			</el-table-column>
+			<el-table-column prop="age" label="服务范围" width="200">
+			</el-table-column>
+			<el-table-column prop="addr" label="登录时间" min-width="150">
+			</el-table-column>
+			<el-table-column prop="addr" label="创建时间" min-width="150">
+			</el-table-column>
+			<el-table-column label="操作" width="150">
+				<template scope="scope">
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<!--工具条-->
+		<el-col :span="24" class="toolbar">
+		    <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+			</el-pagination>
+		</el-col>
+		<!-- 添加产品详细 待续。。。。。。-->
+		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="150px" :rules="addFormRules" ref="addForm">
+				<el-form-item label="用户名:">
+					<el-input v-model="addForm.name"></el-input>
+				</el-form-item>
+				<el-form-item label="密码:">
+					<el-input v-model="addForm.name"></el-input>
+				</el-form-item>
+				<el-form-item label="确认密码:">
+					<el-input v-model="addForm.name"></el-input>
+				</el-form-item>
+				<el-form-item label="顾问姓名:">
+					<el-input v-model="addForm.name"></el-input>
+				</el-form-item>
+				<el-form-item label="联系电话:">
+					<el-input v-model="addForm.name"></el-input>
+				</el-form-item>
+				<el-form-item label="邮箱地址:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="咨询量:">
+					<el-input-number v-model="addForm.age"></el-input-number>
+				</el-form-item>
+				<el-form-item label="下单量:">
+					<el-input-number type="textarea" v-model="addForm.age"></el-input-number>
+				</el-form-item>
+				<el-form-item label="邀请人数:">
+					<el-input-number type="textarea" v-model="addForm.age"></el-input-number>
+				</el-form-item>
+				<el-form-item label="已认证用户:">
+					<el-input-number type="textarea" v-model="addForm.age"></el-input-number>
+				</el-form-item>
+				<el-form-item label="会员登录次数:">
+					<el-input-number type="textarea" v-model="addForm.age"></el-input-number>
+				</el-form-item>
+				<el-form-item label="上级:">
+					<el-select v-model="value2" multiple filterable default-first-option placeholder= "输入顾问">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
+				</el-form-item> 
+				<el-form-item label="部门:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="职位:">
+					<el-input v-model="addForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="服务地区:">
+					<el-select v-model="value2" multiple filterable default-first-option placeholder= "选择服务范围">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="顾问状态:">
+				    <el-checkbox-group v-model="value2">
+					    <el-checkbox label="有效" name="type"></el-checkbox>
+					    <el-checkbox label="职员状态" name="type"></el-checkbox>
+					    <el-checkbox label="超级管理员" name="type"></el-checkbox>
+				    </el-checkbox-group>
+				</el-form-item>
+				<el-form-item label="顾问组:">
+				    <el-checkbox-group v-model="value2">
+					    <el-checkbox label="审核组" name="type"></el-checkbox>
+					    <el-checkbox label="美工组" name="type"></el-checkbox>
+					    <el-checkbox label="运营组" name="type"></el-checkbox>
+					    <el-checkbox label="编辑组" name="type"></el-checkbox>
+					    <el-checkbox label="产品管理" name="type"></el-checkbox>
+					    <el-checkbox label="商务组" name="type"></el-checkbox>
+					    <el-checkbox label="游客" name="type"></el-checkbox>
+				    </el-checkbox-group>
+				</el-form-item>
+				<el-form-item label="加入时间:">
+					<el-input v-model="addForm.age"></el-input>
+				</el-form-item>
+				<el-form-item label="上次登录:">
+					<el-input v-model="addForm.age"></el-input>
+				</el-form-item>
+				<el-form-item label="简要介绍:">
+					<el-input type="textarea" v-model="addForm.age"></el-input>
+				</el-form-item>				
+				<el-form-item label="个人介绍:">
+					<el-input type="textarea" v-model="addForm.age"></el-input>
+				</el-form-item>
+				<el-form-item label="头像上传:">
+					<el-input type="textarea" v-model="addForm.age"></el-input>
+				</el-form-item>
+
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="addFormVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+			</div>
+		</el-dialog>
+		<!--编辑界面-->
+		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+			<el-form :model="editForm" label-width="150px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="产品名称">
+					<el-input v-model="editForm.name"></el-input>
+				</el-form-item>
+				<el-form-item label="产品价格（元）">
+					<el-input v-model="editForm.sex"></el-input>
+				</el-form-item>
+				<el-form-item label="产品价格（件）">
+					<el-input v-model="editForm.age"></el-input>
+				</el-form-item>
+				<el-form-item label="访问量">
+					<el-input type="textarea" v-model="editForm.addr"></el-input>
+				</el-form-item>
+				<el-form-item label="分类排名:">
+					<el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
+				</el-form-item>
+				<el-form-item label="栏目负责人:">
+					<el-select v-model="value2" multiple filterable default-first-option placeholder= "请选择文章标签">
+					    <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+					    </el-option>
+					</el-select>
+				</el-form-item>
+
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="editFormVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+			</div>
+		</el-dialog>
 	</section>
 </template>
+<script>
+	import util from '../../common/js/util'
+	//import NProgress from 'nprogress'
+	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
+
+	export default {
+		data() {
+			return {
+				input: '',
+
+				activeName2: 'first',
+				filters: {
+					name: ''
+				},
+				users: [],
+				total: 0,
+				page: 1,
+				listLoading: false,
+				sels: [],//列表选中列
+
+				editFormVisible: false,//编辑界面是否显示
+				editLoading: false,
+				editFormRules: {
+					name: [
+						{ required: true, message: '请输入姓名', trigger: 'blur' }
+					]
+				},
+				//编辑界面数据
+				editForm: {
+					id: 0,
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+					// titleFir: '',
+					// titleFirSeo: '',
+					// titleFirKey: '',
+					// titleFirDesc: '',
+					// titleFirArr: '',
+					// titleFirMast: ''
+				},
+
+				addFormVisible: false,//新增界面是否显示
+				addLoading: false,
+				addFormRules: {
+					name: [
+						{ required: true, message: '请输入姓名', trigger: 'blur' }
+					]
+				},
+				//新增界面数据
+				addForm: {
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+					// titleFir: '',
+					// titleFirSeo: '',
+					// titleFirkey: '',
+					// titleFirdesc: '',
+					// titleFirarr: '',
+					// titleFirmast: ''
+				},
+				addconsultForm: {
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+					// titleFir: '',
+					// titleFirSeo: '',
+					// titleFirkey: '',
+					// titleFirdesc: '',
+					// titleFirarr: '',
+					// titleFirmast: ''
+				},
+				editconsultForm: {
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+					// titleFir: '',
+					// titleFirSeo: '',
+					// titleFirkey: '',
+					// titleFirdesc: '',
+					// titleFirarr: '',
+					// titleFirmast: ''
+				},
+				// 测试数据
+				options5: [{
+		          value: 'HTML',
+		          label: 'HTML'
+		        }, {
+		          value: 'CSS',
+		          label: 'CSS'
+		        }, {
+		          value: 'JavaScript',
+		          label: 'JavaScript'
+		        }],
+		        value: [],
+		        value2: [],
+			}
+		},
+		methods: {
+			handleClick(tab, event) {
+		        console.log(tab, event);
+		    },
+			//性别显示转换
+			formatSex: function (row, column) {
+				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
+			},
+			handleCurrentChange(val) {
+				this.page = val;
+				this.getUsers();
+			},
+			//获取用户列表
+			getUsers() {
+				let para = {
+					page: this.page,
+					name: this.filters.name
+				};
+				this.listLoading = true;
+				//NProgress.start();
+				getUserListPage(para).then((res) => {
+					this.total = res.data.total;
+					this.users = res.data.users;
+					this.listLoading = false;
+					//NProgress.done();
+				});
+			},
+			//删除
+			handleDel: function (index, row) {
+				this.$confirm('确认删除该记录吗?', '提示', {
+					type: 'warning'
+				}).then(() => {
+					this.listLoading = true;
+					//NProgress.start();
+					let para = { id: row.id };
+					removeUser(para).then((res) => {
+						this.listLoading = false;
+						//NProgress.done();
+						this.$message({
+							message: '删除成功',
+							type: 'success'
+						});
+						this.getUsers();
+					});
+				}).catch(() => {
+
+				});
+			},
+			//显示编辑界面
+			handleEdit: function (index, row) {
+				this.editFormVisible = true;
+				this.editForm = Object.assign({}, row);
+				console.log(index)
+				console.log(row)
+			},
+			//显示新增界面
+			handleAdd: function () {
+				this.addFormVisible = true;
+				this.addForm = {
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+				};
+			},
+			handleconsultEdit: function () {
+				this.addFormVisible = true;
+				this.editconsultForm = {
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+				};
+			},
+			handleconsultAdd: function () {
+				this.addFormVisible = true;
+				this.addconsultForm = {
+					name: '',
+					sex: -1,
+					age: 0,
+					birth: '',
+					addr: ''
+				};
+			},
+			//编辑
+			editSubmit: function () {
+				this.$refs.editForm.validate((valid) => {
+					if (valid) {
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							this.editLoading = true;
+							//NProgress.start();
+							let para = Object.assign({}, this.editForm);
+							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+							editUser(para).then((res) => {
+								this.editLoading = false;
+								//NProgress.done();
+								this.$message({
+									message: '提交成功',
+									type: 'success'
+								});
+								this.$refs['editForm'].resetFields();
+								this.editFormVisible = false;
+								this.getUsers();
+							});
+						});
+					}
+				});
+			},
+			//新增
+			addSubmit: function () {
+				this.$refs.addForm.validate((valid) => {
+					if (valid) {
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							this.addLoading = true;
+							//NProgress.start();
+							let para = Object.assign({}, this.addForm);
+							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+							addUser(para).then((res) => {
+								this.addLoading = false;
+								//NProgress.done();
+								this.$message({
+									message: '提交成功',
+									type: 'success'
+								});
+								this.$refs['addForm'].resetFields();
+								this.addFormVisible = false;
+								this.getUsers();
+							});
+						});
+					}
+				});
+			},
+			selsChange: function (sels) {
+				this.sels = sels;
+			},
+			//批量删除
+			batchRemove: function () {
+				var ids = this.sels.map(item => item.id).toString();
+				this.$confirm('确认删除选中记录吗？', '提示', {
+					type: 'warning'
+				}).then(() => {
+					this.listLoading = true;
+					//NProgress.start();
+					let para = { ids: ids };
+					batchRemoveUser(para).then((res) => {
+						this.listLoading = false;
+						//NProgress.done();
+						this.$message({
+							message: '删除成功',
+							type: 'success'
+						});
+						this.getUsers();
+					});
+				}).catch(() => {
+
+				});
+			}
+		},
+		mounted() {
+			this.getUsers();
+		}
+	}
+
+</script>
+<style>
+	.add_product{width: 108px;height: 28px;line-height: 28px;padding: 0px;font-size: 12px;margin-bottom: 16px;margin-left: 10px;float: right;}
+	.service_addr,.list_choose{padding-right: 20px;}
+	.service_addr .el-select,.list_choose .el-select{width:100%;}
+	.service_addr .el-select .el-input__inner,.list_choose .el-select .el-input__inner,.search_content .el-input__inner{height:28px!important;}
+	.search_content button{width:20%;height: 28px;line-height: 28px;padding: 0px 5px;}
+	.search_content button span{margin-left: 0px!important;}
+	.search_content .el-input{width: 75%;vertical-align: top;}
+	.edit_consult,.add_consult{width: 108px;height: 28px;line-height: 28px;padding: 0px;font-size: 12px;margin-bottom: 16px;float: right;}
+</style>

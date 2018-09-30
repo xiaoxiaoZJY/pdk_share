@@ -17,10 +17,19 @@ import TagLibrary from './views/collect/TagLibrary.vue'
 import RegularOrder from './views/order/RegularOrder.vue'
 import ConsultOrder from './views/order/ConsultOrder.vue'
 
+import EvaluationManagement from './views/manage/EvaluationManagement.vue'
+import ProsecutionManagement from './views/manage/ProsecutionManagement.vue'
+import RefundOrder from './views/manage/RefundOrder.vue'
+import RechargeOrder from './views/manage/RechargeOrder.vue'
+import WithdrawOrder from './views/manage/WithdrawOrder.vue'
+import HighseaOrder from './views/manage/HighseaOrder.vue'
+import DemandOrder from './views/manage/DemandOrder.vue'
+
 import ConsultantList from './views/consultant/ConsultantList.vue'
 
 import MemberList from './views/member/MemberList.vue'
 import MemberGrade from './views/member/MemberGrade.vue'
+import MemberProduct from './views/member/MemberProduct.vue'
 
 import CaseList from './views/case/CaseList.vue'
 
@@ -73,16 +82,16 @@ let routes = [
             { path: '/product_property', component: ProductProperty, name: '产品属性' }
         ]
     },
-    {
-        path: '/',
-        component: Home,
-        name: '采集中心',
-        children: [
-            { path: '/purchase_order', component: PurchaseOrder, name: '采购订单' },
-            { path: '/supply_order', component: SupplyOrder, name: '供应订单' },
-            { path: '/tag_library', component: TagLibrary, name: '标签库' }
-        ]
-    },
+    // {
+    //     path: '/',
+    //     component: Home,
+    //     name: '采集中心',
+    //     children: [
+    //         { path: '/purchase_order', component: PurchaseOrder, name: '采购订单' },
+    //         { path: '/supply_order', component: SupplyOrder, name: '供应订单' },
+    //         { path: '/tag_library', component: TagLibrary, name: '标签库' }
+    //     ]
+    // },
     {
         path: '/',
         component: Home,
@@ -90,6 +99,20 @@ let routes = [
         children: [
             { path: '/regular_order', component: RegularOrder, name: '常规订单' },
             { path: '/consult_order', component: ConsultOrder, name: '咨询订单' }
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '订单管理',
+        children: [
+            { path: '/evaluation_management', component: EvaluationManagement, name: '评价管理' },
+            { path: '/prosecution_management', component: ProsecutionManagement, name: '控诉管理' },
+            { path: '/refund_order', component: RefundOrder, name: '退款订单' },
+            { path: '/recharge_order', component: RechargeOrder, name: '充值订单' },
+            { path: '/withdraw_order', component: WithdrawOrder, name: '提现订单' },
+            { path: '/highsea_order', component: HighseaOrder, name: '公海订单' },
+            { path: '/demand_order', component: DemandOrder, name: '需求订单' }
         ]
     },
     {
@@ -106,7 +129,8 @@ let routes = [
         name: '会员',
         children: [
             { path: '/member_list', component: MemberList, name: '会员列表' },
-            { path: '/member_grade', component: MemberGrade, name: '会员等级' }
+            { path: '/member_grade', component: MemberGrade, name: '会员等级' },
+            { path: '/member_product', component: MemberProduct, name: '会员产品' }
         ]
     },
     {
@@ -133,18 +157,18 @@ let routes = [
             { path: '/topic_center', component: TopicCenter, name: '专题中心' }
         ]
     },
-    {
-        path: '/',
-        component: Home,
-        name: '分销',
-        children: [
-            { path: '/distribution_member', component: DistributionMember, name: '分销会员' },
-            { path: '/distribution_product', component: DistributionProduct, name: '分销产品' },
-            { path: '/distribution_order', component: DistributionOrder, name: '分销订单' },
-            { path: '/distribution_bill', component: DistributionBill, name: '分销账单' },
-            { path: '/distribution_text', component: DistributionText, name: '分销文案' }
-        ]
-    },
+    // {
+    //     path: '/',
+    //     component: Home,
+    //     name: '分销',
+    //     children: [
+    //         { path: '/distribution_member', component: DistributionMember, name: '分销会员' },
+    //         { path: '/distribution_product', component: DistributionProduct, name: '分销产品' },
+    //         { path: '/distribution_order', component: DistributionOrder, name: '分销订单' },
+    //         { path: '/distribution_bill', component: DistributionBill, name: '分销账单' },
+    //         { path: '/distribution_text', component: DistributionText, name: '分销文案' }
+    //     ]
+    // },
     {
         path: '/',
         component: Home,
@@ -155,14 +179,14 @@ let routes = [
             { path: '/help_advice', component: HelpAdvice, name: '投诉与建议' }
         ]
     },
-    {
-        path: '/',
-        component: Home,
-        name: '优惠券',
-        children: [
-            { path: '/coupon_center', component: Coupon, name: '优惠券列表' }
-        ]
-    },
+    // {
+    //     path: '/',
+    //     component: Home,
+    //     name: '优惠券',
+    //     children: [
+    //         { path: '/coupon_center', component: Coupon, name: '优惠券列表' }
+    //     ]
+    // },
     {
         path: '*',
         hidden: true,
